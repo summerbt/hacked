@@ -149,6 +149,12 @@ body{
 	padding:10px;
 	position: absolute;
 	border-radius: 1em;
+	overflow-y: scroll;
+
+}
+
+#terminalInputElement{
+	display: none;
 }
 
 #terminal{
@@ -160,6 +166,9 @@ body{
 	font-size: 1em;
 }
 
+iframe{
+	volume:0.02;
+}
 /* Footer styles 
 	(all the styles inside the < footer > tag)
 */
