@@ -49,7 +49,7 @@ function setVolume(){
 function retrieveName(){
 	user.hackerHandle = $("#login").val();
 	$("#login").val('');
-	terminalLog.unshift("Greetings," + user.hackerHandle);
+	terminalLog.unshift("Greetings, " + user.hackerHandle);
 	console.log(user.hackerHandle);
 }
 
@@ -57,7 +57,7 @@ function retrieveTerminalInput(){
 	var terminalInput = $('#terminal').val();
 	console.log(terminalInput);
 	$('#terminal').val('');
-	terminalLog.push(terminalInput);
+	terminalLog.push(prompt+" "+terminalInput);
 }
 
 function launchTerminal(){
@@ -76,7 +76,7 @@ function printToTerminal(){
 	for(i in terminalLog){
 			var temp = terminalLog[i];
 			user.gameLog.push(temp);
-			$("#terminalInputElement").append('<p>'+prompt+temp+'</p>');
+			$("#terminalInputElement").append('<p>'+temp+'</p>');
 			inputFocus();
 		}
 		terminalLog = [];
@@ -122,14 +122,14 @@ setVolume();
 	// 	}
 	// });
 
-	// $("#newsBanner").on('click',launchTerminal);
+	$("#newsBanner").on('click',launchTerminal);
 	// $(document).on('keypress',function(key){
 	// 	if (key.keyCode ==13){
 	// 		numGuess();
 	// 	}
 	// });
 
-	// $("#tacticsBanner").on('click',launchTerminal);
+	$("#tacticsBanner").on('click',launchTerminal);
 	// $(document).on('keypress',function(key){
 	// 	if (key.keyCode ==13){
 	// 		numGuess();
