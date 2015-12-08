@@ -168,6 +168,7 @@ body{
 
 iframe{
 	volume:0.02;
+	display: none;
 }
 /* Footer styles 
 	(all the styles inside the < footer > tag)
