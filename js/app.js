@@ -10,9 +10,11 @@ var selectedCategory = "";
 
 var fictionQuestionCount = 0;
 var newsQuestionCount = 0;
+var tacticsQuestionCount = 0;
 
 var fictionAnsCheckArray = [];
-var newsAnsCheckArray = []
+var newsAnsCheckArray = [];
+var tacticsAnsCheckArray = [];
 
 var completedTests = [];
 
@@ -66,7 +68,7 @@ var fictionQ1 = Object.create(question);
 
 var fictionQ2 = Object.create(question);
 	fictionQ2.category = "fiction";
-	fictionQ2.questionText = "In the television show 'Mr.Robot' the organization 'fsociety' most closely resembles real life hacktivist group [--?--].";
+	fictionQ2.questionText = "In the television show 'Mr.Robot' the organization 'fsociety' most closely resembles which real-life hacktivist group?";
 	fictionQ2.choices = {
 		a:"Equation Group",
 		b:"Chaos Computer Club",
@@ -90,18 +92,18 @@ var fictionArray = [fictionQ1, fictionQ2, fictionQ3];
 
 var newsQ1 = Object.create(question);
 	newsQ1.category = "news";
-	newsQ1.questionText = "What term was coined to describe the activity of people who study, experiment with, or explore, telecommunication systems";
+	newsQ1.questionText = "Between 2005 and 2007, [--?--] and his/her crew used SQL injections to steal a staggering 170 million ATM and credit card numbers from major retailers like TJ Maxx, DSW and Dave & Buster’s.";
 	newsQ1.choices = {
-		a:"Phreaking",
-		b:"Phacking",
-		c:"Phreq-ing",
-		d:"Blue Boxing"
+		a:"Jonathan James aka 'c0mrade'",
+		b:"Kevin Mitnick aka 'The Condor'",
+		c:"Carmin Karasic aka 'carminka'",
+		d:"Albert Gonzalez aka 'CumbaJohny'"
 	}
-	newsQ1.answer = ['A','PREAKING'];
+	newsQ1.answer = ['D',newsQ1.choices.d.toUpperCase()];
 
 var newsQ2 = Object.create(question);
 	newsQ2.category = "news";
-	newsQ2.questionText = "The following quote can be found in the essay titled 'The Conscience of a Hacker' written by 'The Mentor' on January 8, 1986";
+	newsQ2.questionText = "The following quote can be found in the essay titled 'The Conscience of a Hacker' aka 'The Hacker Manifesto' written by 'The Mentor' on January 8, 1986";
 	newsQ2.choices = {
 		a:"The ties that bind collective-minded parties together take dedication to build, and our egotistical concerns do not help.",
 		b:"This is our world now... the world of the electron and the switch, the beauty of the baud.  We make use of a service already existing without paying for what could be dirt-cheap if it wasn't run by profiteering gluttons, and you call us criminals.",
@@ -112,16 +114,52 @@ var newsQ2 = Object.create(question);
 
 var newsQ3 = Object.create(question);
 	newsQ3.category = "news";
-	newsQ3.questionText = "'Onion routing' is implemented by encryption in which of the following layers of the communication protocol stack.";
+	newsQ3.questionText = "The following term refers to a protest movement against the practices of the Church of Scientology by members of Anonymous.";
 	newsQ3.choices = {
+		a:"Project Chanology",
+		b:"Operation Payback",
+		c:"Phreaking",
+		d:"Operation Leakspin"
+	}
+	newsQ3.answer = ['A','PROJECT CHANOLOGY'];
+
+var newsArray = [newsQ1, newsQ2, newsQ3];
+
+
+var tacticsQ1 = Object.create(question);
+	tacticsQ1.category = "tactics";
+	tacticsQ1.questionText = "What term was coined to describe the activity of people who study, experiment with, or explore, telecommunication systems";
+	tacticsQ1.choices = {
+		a:"Phreaking",
+		b:"VimL",
+		c:"Distributed Denial of Service attacks",
+		d:"Blue Boxing"
+	}
+	tacticsQ1.answer = ['A','PREAKING'];
+
+var tacticsQ2 = Object.create(question);
+	tacticsQ2.category = "tactics";
+	tacticsQ2.questionText = "The following term refers to psychological manipulation of people into performing actions or divulging confidential information.";
+	tacticsQ2.choices = {
+		a:"Blacklisting",
+		b:"Leakspin",
+		c:"Social Engineering",
+		d:"Phishing"
+	}
+	tacticsQ2.answer = ['C', newsQ2.choices.c.toUpperCase()];
+
+var tacticsQ3 = Object.create(question);
+	tacticsQ3.category = "tactics";
+	tacticsQ3.questionText = "'Onion routing' is implemented by encryption in which of the following layers of the communication protocol stack.";
+	tacticsQ3.choices = {
 		a:"network layer",
 		b:"transport layer",
 		c:"application layer",
 		d:"session layer"
 	}
-	newsQ3.answer = ['C','APPLICATION LAYER'];
+	tacticsQ3.answer = ['C','APPLICATION LAYER'];
 
-var newsArray = [newsQ1, newsQ2, newsQ3];
+var tacticsArray = [tacticsQ1, tacticsQ2, tacticsQ3];
 
 /* 1.0 input functionality */
 	function retrieveName(){
@@ -164,27 +202,56 @@ var newsArray = [newsQ1, newsQ2, newsQ3];
 	function gameIteration(input){
 		var inputUpperCase = input.toUpperCase();
 		if(inputUpperCase == "NEXT"){
-			if ( selectedCategory == "fiction"){
-				if ( fictionQuestionCount == fictionArray.length ){
-					completedTests.push(fictionArray);
-					terminalLog.push("***");
-					terminalLog.push("You have completed the hacker fiction portion of this test, it now time for you to prove your knowledge of real-life hacking appearances.");
-					terminalLog.push("***");
-					selectedCategory = "news";
-				}else{
-					questionDisplay();
-					gameLocation = "check answer";
+			if(fictionQuestionCount == fictionArray.length && newsQuestionCount == newsArray.length && tacticsQuestionCount == tacticsArray.length){
+			 calculateScore();
+			 printToTerminal();
+			} else {
+				if ( selectedCategory == "fiction"){
+					if ( fictionQuestionCount == fictionArray.length ){
+						completedTests.push(fictionArray);
+						terminalLog.push("***");
+						terminalLog.push("You have completed the hacker fiction portion of this test, it now time for you to prove your knowledge of real-life hacking appearances.");
+						terminalLog.push("***");
+						selectedCategory = "news";
+						printToTerminal();
+					}else{ 
+						questionDisplay();
+						gameLocation = "check answer";
+					}
+				}
+
+				if ( selectedCategory == "news"){
+					if(newsQuestionCount == newsArray.length){
+						completedTests.push(newsArray);
+						terminalLog.push("***");
+						terminalLog.push("You have completed the hacker news portion of this test, it now time for you to prove your knowledge of real-life hacking tactics.");
+						terminalLog.push("***");
+						printToTerminal();
+						selectedCategory = "tactics";
+					}else{
+						questionDisplay();
+						gameLocation = "check answer";
+					}
+				}
+
+				if ( selectedCategory == "tactics"){
+					if(tacticsQuestionCount == tacticsArray.length){
+						completedTests.push(tacticsArray);
+						terminalLog.push("***");
+						terminalLog.push("You have completed the hacker news portion of this test, it now time for you to prove your knowledge of real-life hacking tactics. Type 'next' to continue.");
+						terminalLog.push("***");
+						printToTerminal();
+						selectedCategory = "fiction";
+
+					}else{
+						questionDisplay();
+						gameLocation = "check answer";
+					}
 				}
 			}
-
-			if ( selectedCategory == "news"){
-				questionDisplay();
-				gameLocation = "check answer";
-			}
-
-			if ( selectedCategory == "tactics"){
-
-			}
+		}else{
+			terminalLog.push(input+": command not found");
+			printToTerminal();
 		}
 	}
 
@@ -198,7 +265,8 @@ var newsArray = [newsQ1, newsQ2, newsQ3];
 	        console.log("newsQuestionCount: " + newsQuestionCount);
 	        var questionObject = newsArray[newsQuestionCount];
 	    } else if (selectedCategory == "tactics"){
-
+			console.log("tacticsQuestionCount: " + tacticsQuestionCount);
+	        var questionObject = tacticsArray[tacticsQuestionCount];
 	    }
 	    terminalLog.push("***");
         terminalLog.push(questionObject.questionText);
@@ -233,9 +301,90 @@ var newsArray = [newsQ1, newsQ2, newsQ3];
 			gameLocation = "next";
 			newsQuestionCount++;
 		}else if (selectedCategory == "tactics"){
-
+			var questionObject = tacticsArray[tacticsQuestionCount];
+			var ansCheckBool = questionObject.checkAnswer(terminalInput, questionObject.answer);
+			tacticsAnsCheckArray.push(ansCheckBool);
+			terminalLog.push(ansCheckBool);
+			terminalLog.push("Type 'next' to access next question");
+			printToTerminal();
+			gameLocation = "next";
+			tacticsQuestionCount++;
 		}
     }
+
+    function calculateScore(){
+    	terminalLog.push("Congratulations, you have finished proving your knowledge of hacker culture!");
+    	var fictionScore = 0;
+    	var newsScore = 0;
+    	var tacticsScore = 0;
+
+console.log(fictionAnsCheckArray);
+
+    	for( i in fictionAnsCheckArray){
+    		if (fictionAnsCheckArray[i] == true)
+    			{
+    				fictionScore++;
+    			}
+    			console.log(fictionScore);
+    		}
+		if (fictionScore == 3){
+			terminalLog.push("Hacker Fiction Score: Elite Status")
+		}
+		if (fictionScore == 2){
+			terminalLog.push("Hacker Fiction Score: Hacktivist Status")
+		}
+		if (fictionScore == 1){
+			terminalLog.push("Hacker Fiction Score: Neophyte Status")
+		}
+		if (fictionScore == 0){
+			terminalLog.push("Hacker Fiction Score: Failure")
+		}
+
+console.log(newsAnsCheckArray);
+
+    	for(i in newsAnsCheckArray){
+    		if (newsAnsCheckArray[i] == true)
+    			{
+    				newsScore++;
+    			}
+    			console.log(newsScore);
+    		}
+		if (newsScore == 3){
+			terminalLog.push("Hacker News Score: Elite Status")
+		}
+		if (newsScore == 2){
+			terminalLog.push("Hacker News Score: Hacktivist Status")
+		}
+		if (newsScore == 1){
+			terminalLog.push("Hacker News Score: Neophyte Status")
+		}
+		if (newsScore == 0){
+			terminalLog.push("Hacker News Score: Failure")
+		}
+
+console.log(tacticsAnsCheckArray);
+
+    	for(i in tacticsAnsCheckArray){
+    		if (tacticsAnsCheckArray[i] == true)
+    			{
+    				tacticsScore++;
+    			}
+    			console.log(tacticsScore);
+    		}
+		if (tacticsScore == 3){
+			terminalLog.push("Hacker Tactics Score: Elite Status")
+		}
+		if (tacticsScore == 2){
+			terminalLog.push("Hacker Tactics Score: Hacktivist Status")
+		}
+		if (tacticsScore == 1){
+			terminalLog.push("Hacker Tactics Score: Neophyte Status")
+		}
+		if (tacticsScore == 0){
+			terminalLog.push("Hacker Tactics Score: Failure")
+		}
+    }
+
 	/* ---> 2.1 use variable as input for the Game Response function */
     /* ---> 2.2 collect the response in the terminal log*/
 
@@ -252,12 +401,11 @@ var newsArray = [newsQ1, newsQ2, newsQ3];
 	function launchTerminal(){
 		$("#gameTerminal").show(1000);
 		document.getElementById('terminal').scrollIntoView();
-		// if (this.id == fictionBanner){
 			$("#terminalInputElement").show();
 			for(i in terminalLog){
 				printToTerminal();
 			};
-		// }
+
 		console.log(this.id);
 	}
 
